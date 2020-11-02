@@ -47,6 +47,8 @@ class HashTable:
 
         Implement this.
         """
+        # The size should be chosen so that the load factor is less than 1
+
         load_factor = float(self.size) / float(get_num_slots())
 
         if load_factor > 0.7:
