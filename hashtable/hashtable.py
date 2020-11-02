@@ -21,7 +21,11 @@ class HashTable:
     """
 
     def __init__(self, capacity):
-        # Your code here
+        self.capacity = capacity
+        self.size = 0
+        if capacity < 8:
+            capacity = MIN_CAPACITY
+        self.list = [None] * capacity
 
 
     def get_num_slots(self):
@@ -34,7 +38,7 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        return self.capacity
 
 
     def get_load_factor(self):
@@ -43,7 +47,17 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        load_factor = float(self.size) / float(get_num_slots())
+
+        if load_factor > 0.7:
+            new_capacity = self.capacity * 2
+            resize(new_capacity)
+        elif load_factor < 0.2:
+            if (self.capacity/2) < MIN_CAPACITY:
+                new_capacity = MIN_CAPACITY
+            else:
+                new_capacity = self.capacity /2
+            resize(new_capacity)
 
 
     def fnv1(self, key):
