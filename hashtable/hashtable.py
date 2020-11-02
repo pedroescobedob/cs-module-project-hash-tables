@@ -51,7 +51,7 @@ class HashTable:
 
         load_factor = float(self.size) / float(get_num_slots())
 
-        if load_factor > 0.7:
+        if load_factor > 0.9:
             new_capacity = self.capacity * 2
             resize(new_capacity)
         elif load_factor < 0.2:
