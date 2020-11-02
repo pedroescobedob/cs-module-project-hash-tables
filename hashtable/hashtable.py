@@ -25,7 +25,7 @@ class HashTable:
         self.size = 0
         if capacity < 8:
             capacity = MIN_CAPACITY
-        self.list = [None] * capacity
+        self.storage = [None] * capacity
 
 
     def get_num_slots(self):
@@ -66,7 +66,6 @@ class HashTable:
 
         Implement this, and/or DJB2.
         """
-
         # Your code here
 
 
@@ -76,7 +75,10 @@ class HashTable:
 
         Implement this, and/or FNV-1.
         """
-        # Your code here
+        hash = 5381
+        for element in key:
+            hash = (hash * 33) + ord(element)
+        return hash
 
 
     def hash_index(self, key):
@@ -95,7 +97,18 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        self.size += 1
+
+        index = self.hash_index(key)
+        entry = HashTableEntry(key, value)
+        storage = self.storage[index]
+        self.size += 1
+
+        if storage:
+            self.storage[index] = entry
+            self.storage[index].next = storage
+        else:
+            self.storage[index] = entry
 
 
     def delete(self, key):
@@ -106,7 +119,8 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        self.put(key, None)
+        self.size -= 1
 
 
     def get(self, key):
@@ -117,7 +131,14 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        index = self.hash_index(key)
+        storage = self.storage[index]
+        while storage:
+            if storage.key == key:
+                return storage.value
+            storage = storage.next
+        # If key is not found return none
+        return None
 
 
     def resize(self, new_capacity):
@@ -127,7 +148,17 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        old_hashtable = self.storage
+        old_capacity = self.capacity
+
+        self.storage = [None] * new_capacity
+        self.capacity = new_capacity
+        
+        for index in range(old_capacity):
+            location = old_hashtable[index]
+            while location != None:
+                self.put(location.key, location.value)
+                location = location.next
 
 
 
